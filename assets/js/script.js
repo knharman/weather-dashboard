@@ -21,6 +21,18 @@ var handleSearchButtonClick = function (event) {
 
 var handleHistoryButtonClick = function (event) {
     displayCityWeatherData(event.target.innerHTML);
+    changeNewestCity(event.target.innerHTML.toLowerCase());
+}
+
+var changeNewestCity = function (cityName) {
+    // figure out where the cityName is in the historyArray
+    var clickedCity = historyArray.indexOf(cityName);
+
+    // remove it from the array
+    historyArray.splice(clickedCity, 1);
+
+    addToLocalStorage(cityName);
+    generateHistoryList();
 }
 
 var addToLocalStorage = function (cityName) {
