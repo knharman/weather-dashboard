@@ -1,9 +1,37 @@
 var handleSearchButtonClick = function (event) {
-    var cityInput = document.getElementById("cityInput")
-    displayCityWeatherData(cityInput.value)
+    var cityInput = document.getElementById("cityInput");
+    displayCityWeatherData(cityInput.value);
+    addToHistory(cityInput.value);
 }
 
-var displayCityWeatherData = async function (cityName) {
+var handleHistoryButtonClick = function (event) {
+    displayCityWeatherData(event.target.innerHTML);
+}
+
+var addToHistory = function (cityName) {
+    // add history button
+    addHistoryButton(cityName);
+    // add city to localStorage.history
+    addToLocalStorage(cityName);
+}
+
+var addToLocalStorage = function (cityName) {
+
+}
+
+var addHistoryButton = function (cityName) {
+    // <button type="button" class="btn btn-primary btn-block" id="searchBtn" onclick="handleSearchButtonClick()">Search</button>
+
+    var historyButton = document.createElement("button");
+    historyButton.className = "btn btn-light btn-block";
+    historyButton.innerHTML = cityName.toUpperCase();
+    historyButton.addEventListener("click", handleHistoryButtonClick);
+
+    var historyList = document.getElementById("history");
+    historyList.prepend(historyButton);
+}
+
+var displayCityWeatherData = function (cityName) {
     getLatLon(cityName)
     .then(function(latLon) {
         return getWeatherData(latLon);
@@ -21,6 +49,7 @@ var updateContainers = function (cityName, weatherData) {
 var currentWeather = function (cityName, weatherData) {
     console.log(weatherData);
     var container = document.getElementById("currentWeather");
+    container.innerHTML = "";
 
     var heading = document.createElement("h2");
     var dateString = moment.unix(weatherData.current.dt).format("MM/DD/YYYY");
@@ -57,6 +86,7 @@ var weatherIconURL = function(iconCode) {
 
 var fiveDayWeather = function (weatherData) {
     var container = document.getElementById("fiveDayForecast");
+    container.innerHTML = "";
 
     var heading = document.createElement("h3");
     heading.innerHTML = "5-Day Forecast:";
