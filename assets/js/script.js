@@ -17,6 +17,7 @@ var handleSearchButtonClick = function (event) {
     var cityInput = document.getElementById("cityInput");
     displayCityWeatherData(cityInput.value);
     addToHistory(cityInput.value);
+    cityInput.value = "";
 }
 
 var handleHistoryButtonClick = function (event) {
@@ -94,14 +95,34 @@ var currentWeather = function (cityName, weatherData) {
     humidity.innerHTML = `Humidity: ${weatherData.current.humidity}%`;
 
     var uvIndex = document.createElement("h4");
-    uvIndex.innerHTML = `UV Index: ${weatherData.current.uvi}`
+    uvIndex.innerHTML = "UV Index: "
     
+    var uvIndexRating = getUVIndexRating(weatherData.current.uvi);
+    uvIndex.appendChild(uvIndexRating);
+
     container.appendChild(heading);
     container.appendChild(temperature);
     container.appendChild(wind);
     container.appendChild(humidity);
     container.appendChild(uvIndex);
 
+}
+
+var getUVIndexRating = function(uv) {
+    var uvSpan = document.createElement("span");
+
+    if (uv <= 2) {
+        // do the green one
+        uvSpan.className = "badge badge-pill bg-success";
+    } else if (uv <= 5) {
+        // do the yellow one
+        uvSpan.className = "badge badge-pill bg-warning";
+    } else {
+        // danger
+        uvSpan.className = "badge badge-pill bg-danger";
+    }
+    uvSpan.innerHTML = uv;
+    return uvSpan;
 }
 
 var weatherIconURL = function(iconCode) {
