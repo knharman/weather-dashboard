@@ -1,3 +1,18 @@
+var getFromLocalStorage = function() {
+    var currentHistory = JSON.parse(window.localStorage.getItem("weatherHistory"));
+    if (!currentHistory) {
+        return [];
+    } else {
+        return currentHistory;
+    }
+}
+
+var addToHistory = function (cityName) {
+    // add city to localStorage.history
+    addToLocalStorage(cityName);
+    generateHistoryList();
+}
+
 var handleSearchButtonClick = function (event) {
     var cityInput = document.getElementById("cityInput");
     displayCityWeatherData(cityInput.value);
@@ -8,15 +23,14 @@ var handleHistoryButtonClick = function (event) {
     displayCityWeatherData(event.target.innerHTML);
 }
 
-var addToHistory = function (cityName) {
-    // add history button
-    addHistoryButton(cityName);
-    // add city to localStorage.history
-    addToLocalStorage(cityName);
-}
-
 var addToLocalStorage = function (cityName) {
+    historyArray.push(cityName);
 
+    if (historyArray.length > 8) {
+        historyArray.splice(0, 1);
+    }
+
+    window.localStorage.setItem("weatherHistory", JSON.stringify(historyArray));
 }
 
 var addHistoryButton = function (cityName) {
@@ -28,7 +42,7 @@ var addHistoryButton = function (cityName) {
     historyButton.addEventListener("click", handleHistoryButtonClick);
 
     var historyList = document.getElementById("history");
-    historyList.prepend(historyButton);
+    historyList.appendChild(historyButton);
 }
 
 var displayCityWeatherData = function (cityName) {
@@ -47,7 +61,6 @@ var updateContainers = function (cityName, weatherData) {
 }
 
 var currentWeather = function (cityName, weatherData) {
-    console.log(weatherData);
     var container = document.getElementById("currentWeather");
     container.innerHTML = "";
 
@@ -173,3 +186,15 @@ var getWeatherData = function(latLon) {
             alert("Unable to fetch weather data.")
         })
 }
+
+var generateHistoryList = function() {
+    var historyList = document.getElementById("history");
+    historyList.innerHTML = "";
+
+    for (i=historyArray.length-1;i>=0;i--) {
+        addHistoryButton(historyArray[i]);
+    }
+}
+
+var historyArray = getFromLocalStorage();
+generateHistoryList();
