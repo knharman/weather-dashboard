@@ -61,6 +61,15 @@ var fiveDayWeather = function (weatherData) {
     var heading = document.createElement("h3");
     heading.innerHTML = "5-Day Forecast:";
 
+    container.appendChild(heading);
+
+    for (i=1; i<6; i++) {
+        var card = singleWeatherCard(weatherData.daily[i]);
+        container.appendChild(card);
+    }
+}
+
+var singleWeatherCard = function (weatherData) {
     var card = document.createElement("div");
     card.className = "card text-center";
 
@@ -68,21 +77,21 @@ var fiveDayWeather = function (weatherData) {
     cardBody.className = "card-body";
 
     var date = document.createElement("h4");
-    date.innerHTML = moment.unix(weatherData.daily[1].dt).format("MM/DD/YYYY");
+    date.innerHTML = moment.unix(weatherData.dt).format("MM/DD/YYYY");
     date.className = "card-title";
 
     var icon = document.createElement("img");
-    icon.src = weatherIconURL(weatherData.daily[1].weather[0].icon);
+    icon.src = weatherIconURL(weatherData.weather[0].icon);
 
     var temp = document.createElement("h5");
-    var tempAverage = getTempAverage(weatherData.daily[1].temp);
+    var tempAverage = getTempAverage(weatherData.temp);
     temp.innerHTML = `Temp: ${tempAverage.toFixed(2)}&#xb0;F`;
 
     var wind = document.createElement("h5");
-    wind.innerHTML = `Wind: ${weatherData.daily[1].wind_speed} MPH`;
+    wind.innerHTML = `Wind: ${weatherData.wind_speed} MPH`;
 
     var humidity = document.createElement("h5");
-    humidity.innerHTML = `Humidity: ${weatherData.daily[1].humidity}%`;
+    humidity.innerHTML = `Humidity: ${weatherData.humidity}%`;
 
     cardBody.appendChild(date);
     cardBody.appendChild(icon);
@@ -92,8 +101,7 @@ var fiveDayWeather = function (weatherData) {
 
     card.appendChild(cardBody);
 
-    container.appendChild(heading);
-    container.appendChild(card);
+    return card;
 }
 
 var getTempAverage = function(temp) {
