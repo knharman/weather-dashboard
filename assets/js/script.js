@@ -23,7 +23,12 @@ var currentWeather = function (cityName, weatherData) {
     var container = document.getElementById("currentWeather");
 
     var heading = document.createElement("h2");
-    heading.innerHTML = `${cityName} ${weatherData.current.dt} ${weatherData.current.weather[0].main}`;
+    var dateString = moment.unix(weatherData.current.dt).format("MM/DD/YYYY");
+    heading.innerHTML = `${cityName.toUpperCase()} ${dateString}`;
+
+    var weatherIcon = document.createElement("img");
+    weatherIcon.src = weatherIconURL(weatherData.current.weather[0].icon);
+    heading.appendChild(weatherIcon);
 
     var temperature = document.createElement("h4");
     temperature.innerHTML = `Temp: ${weatherData.current.temp}&#xb0;F`;
@@ -36,13 +41,18 @@ var currentWeather = function (cityName, weatherData) {
 
     var uvIndex = document.createElement("h4");
     uvIndex.innerHTML = `UV Index: ${weatherData.current.uvi}`
-
+    
     container.appendChild(heading);
     container.appendChild(temperature);
     container.appendChild(wind);
     container.appendChild(humidity);
     container.appendChild(uvIndex);
 
+}
+
+var weatherIconURL = function(iconCode) {
+    // http://openweathermap.org/img/wn/01d.png
+    return `http://openweathermap.org/img/wn/${iconCode}.png`;
 }
 
 var fiveDayWeather = function (weatherData) {
