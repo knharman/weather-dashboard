@@ -56,7 +56,50 @@ var weatherIconURL = function(iconCode) {
 }
 
 var fiveDayWeather = function (weatherData) {
+    var container = document.getElementById("fiveDayForecast");
 
+    var heading = document.createElement("h3");
+    heading.innerHTML = "5-Day Forecast:";
+
+    var card = document.createElement("div");
+    card.className = "card text-center";
+
+    var cardBody = document.createElement("div");
+    cardBody.className = "card-body";
+
+    var date = document.createElement("h4");
+    date.innerHTML = moment.unix(weatherData.daily[1].dt).format("MM/DD/YYYY");
+    date.className = "card-title";
+
+    var icon = document.createElement("img");
+    icon.src = weatherIconURL(weatherData.daily[1].weather[0].icon);
+
+    var temp = document.createElement("h5");
+    var tempAverage = getTempAverage(weatherData.daily[1].temp);
+    temp.innerHTML = `Temp: ${tempAverage.toFixed(2)}&#xb0;F`;
+
+    var wind = document.createElement("h5");
+    wind.innerHTML = `Wind: ${weatherData.daily[1].wind_speed} MPH`;
+
+    var humidity = document.createElement("h5");
+    humidity.innerHTML = `Humidity: ${weatherData.daily[1].humidity}%`;
+
+    cardBody.appendChild(date);
+    cardBody.appendChild(icon);
+    cardBody.appendChild(temp);
+    cardBody.appendChild(wind);
+    cardBody.appendChild(humidity);
+
+    card.appendChild(cardBody);
+
+    container.appendChild(heading);
+    container.appendChild(card);
+}
+
+var getTempAverage = function(temp) {
+    var { day, eve, morn, night } = temp;
+    var sum = day + eve + morn + night;
+    return sum / 4;
 }
 
 var getLatLon = function(cityName) {
