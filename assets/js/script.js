@@ -137,17 +137,21 @@ var fiveDayWeather = function (weatherData) {
     var heading = document.createElement("h3");
     heading.innerHTML = "5-Day Forecast:";
 
+    var cardContainer = document.createElement("div");
+    cardContainer.className = "row d-flex justify-content-around";
+
     container.appendChild(heading);
+    container.appendChild(cardContainer);
 
     for (i=1; i<6; i++) {
         var card = singleWeatherCard(weatherData.daily[i]);
-        container.appendChild(card);
+        cardContainer.appendChild(card);
     }
 }
 
 var singleWeatherCard = function (weatherData) {
     var card = document.createElement("div");
-    card.className = "card text-center";
+    card.className = "card text-center bg-dark text-white";
 
     var cardBody = document.createElement("div");
     cardBody.className = "card-body";
@@ -159,14 +163,14 @@ var singleWeatherCard = function (weatherData) {
     var icon = document.createElement("img");
     icon.src = weatherIconURL(weatherData.weather[0].icon);
 
-    var temp = document.createElement("h5");
+    var temp = document.createElement("h6");
     var tempAverage = getTempAverage(weatherData.temp);
     temp.innerHTML = `Temp: ${tempAverage.toFixed(2)}&#xb0;F`;
 
-    var wind = document.createElement("h5");
+    var wind = document.createElement("h6");
     wind.innerHTML = `Wind: ${weatherData.wind_speed} MPH`;
 
-    var humidity = document.createElement("h5");
+    var humidity = document.createElement("h6");
     humidity.innerHTML = `Humidity: ${weatherData.humidity}%`;
 
     cardBody.appendChild(date);
