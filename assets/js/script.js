@@ -193,7 +193,7 @@ var getTempAverage = function(temp) {
 var getLatLon = function(cityName) {
     // api.openweathermap.org/data/2.5/weather?q=portland&appid=e0c1ba6410238103fe2d482d8b1d932f
     var appId = "e0c1ba6410238103fe2d482d8b1d932f"
-    var url = `http://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${appId}`
+    var url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${appId}`
     return fetch(url)
         .then(function (response) {
             // request was successful
